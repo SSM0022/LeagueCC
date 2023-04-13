@@ -164,5 +164,13 @@ champion_names = {
 }
 
 
-def get_champIDs(participants):
-    return [participant["championId"] for participant in participants]
+def get_champnames(participants):
+    champ_ids = [participant["championId"] for participant in participants]
+    champs = []
+    for id in champ_ids:
+        if id in champion_names:
+            champs.append(champion_names[id])
+    return champs        
+            
+
+
