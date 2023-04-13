@@ -20,3 +20,13 @@ def get_activegame(summoner_id):
         return data["participants"]
     else:
         print(f"{response.status_code} Error: API request unsuccessful")
+
+def get_champjson(champ_name):
+    url = f"http://ddragon.leagueoflegends.com/cdn/13.7.1/data/en_US/champion/{champ_name}.json"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        print(data['data'][champ_name]['spells'])
+    else:
+        print(f"{response.status_code} Error: API request unsuccessful")
+    
