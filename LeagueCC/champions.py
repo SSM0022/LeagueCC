@@ -1,3 +1,5 @@
+import re
+
 champion_names = {
     266: "Aatrox",
     103: "Ahri",
@@ -164,13 +166,26 @@ champion_names = {
 }
 
 
-def get_champnames(participants):
+def find_champnames(participants):
     champ_ids = [participant["championId"] for participant in participants]
     champs = []
     for id in champ_ids:
         if id in champion_names:
             champs.append(champion_names[id])
-    return champs        
+    return champs  
+
+def find_cc(champion, spell_list):
+    r = "<status>"
+    cc_spells = {champion : {}}
+    for i in range(len(spell_list)):
+        if re.search(r, str(spell_list[i])):
+            cc_spells[champion].update({spell_list[i]['id']: spell_list[i]['description']})
+    return cc_spells        
+            
+            
+    
+    
+         
             
 
 

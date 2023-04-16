@@ -1,11 +1,12 @@
-from api_requests import get_summonerID, get_activegame, get_champjson
-from champions import get_champnames
+from api_requests import get_summonerID, get_activegame, get_champspells
+from champions import find_champnames, find_cc
 
 
 def main():
     sum_id = get_summonerID(input("Name: "))
-    champ_list = (get_champnames(get_activegame(sum_id)))
-    get_champjson(champ_list[0])
+    champ_list = (find_champnames(get_activegame(sum_id))) 
+    spells = get_champspells(champ_list[0])
+    print(find_cc(champ_list[0], spells))
 
 
 if __name__ == "__main__":
