@@ -1,8 +1,10 @@
 import requests
 import os
+import urllib.parse
 
 
 def get_summonerID(name):
+    name = urllib.parse.quote(name)
     url = f"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{name}?api_key={os.environ.get('API_KEY')}"
     response = requests.get(url)
     if response.status_code == 200:
