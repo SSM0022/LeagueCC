@@ -173,20 +173,15 @@ def find_champnames(participants):
     for id in champ_ids:
         if id in champion_names:
             champs.append(champion_names[id])
-    return champs  
+    return champs
 
-def find_cc(champion, spell_list):
+
+def find_ccspells(champion, spell_list):
     r = "<status>"
-    cc_spells = {champion : {}}
+    cc_spells = {champion: {}}
     for i in range(len(spell_list)):
         if re.search(r, str(spell_list[i])):
-            cc_spells[champion].update({spell_list[i]['id']: spell_list[i]['description']})
-    return cc_spells        
-            
-            
-    
-    
-         
-            
-
-
+            cc_spells[champion].update(
+                {spell_list[i]["id"]: spell_list[i]["description"]}
+            )
+    return cc_spells
