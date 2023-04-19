@@ -1,6 +1,7 @@
 # Bytecode
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
 # Environment
 venv/
@@ -18,3 +19,5 @@ build/
 
 # Local
 instance/
+
+
