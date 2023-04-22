@@ -168,6 +168,23 @@ champion_names = {
 
 
 def find_champnames(participants):
+    """
+    Retrieves the names of the champions played by each player in a given game.
+
+    Extracts the champion IDs of each participant in the game from the participant data.
+    Searches the `champion_names` dictionary for each ID and appends the corresponding name to a list of champions.
+    Returns the list of champion names.
+
+    Args:
+    participants (list): A list of participant data, which includes information about each player in the game.
+
+    Returns:
+    list: A list of the names of the champions played by each player in the game.
+
+    Raises:
+    None.
+    """
+    
     champ_ids = [participant["championId"] for participant in participants]
     champs = []
     for id in champ_ids:
@@ -177,6 +194,24 @@ def find_champnames(participants):
 
 
 def find_ccspells(champion, spell_list):
+    """
+    Finds and returns the crowd control (CC) spells of a specified champion.
+
+    Searches through a list of champion spells to find spells that contain crowd control effects. If a spell is found
+    to have a crowd control effect, its ID and description are added to a dictionary, which is then returned.
+
+    Args:
+    champion (str): The name of the champion to find crowd control spells for.
+    spell_list (list): A list of dictionaries, with each dictionary representing a champion ability.
+
+    Returns:
+    dict: A dictionary containing the champion's name and a nested dictionary of the champion's crowd control spells,
+          where the keys are the IDs of the spells and the values are their descriptions.
+
+    Raises:
+    None.
+    """
+
     r = "<status>"
     cc_spells = {champion: {}}
     for i in range(len(spell_list)):
