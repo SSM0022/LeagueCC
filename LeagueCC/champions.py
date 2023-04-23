@@ -1,5 +1,6 @@
 import re
 
+# champion names are spelled out according to their data dragon spelling (which omits spaces and other symbols)
 champion_names = {
     266: "Aatrox",
     103: "Ahri",
@@ -184,8 +185,10 @@ def find_champnames(participants):
     Raises:
     None.
     """
-    
+    # RIOT API only returns IDs and not the name of champions
     champ_ids = [participant["championId"] for participant in participants]
+
+    # map champion ID to champion name
     champs = []
     for id in champ_ids:
         if id in champion_names:
@@ -212,10 +215,12 @@ def find_ccspells(champion, spell_list):
     None.
     """
 
+    # RIOT API marks all crowd control abilities with a status tag
     r = "<status>"
     cc_spells = {champion: {}}
     for i in range(len(spell_list)):
         if re.search(r, str(spell_list[i])):
+            # Extract minimal data neccesary for user to comprehend crowd control ability
             cc_spells[champion].update(
                 {spell_list[i]["id"]: spell_list[i]["description"]}
             )
