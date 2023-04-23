@@ -20,10 +20,9 @@ def check_latest_version():
     Any exceptions that occur while reading from or writing to the JSON file.
     """
 
-    #  Set the file path for the version JSON file
     file_path = os.path.join(os.path.dirname(__file__), "version.json")
 
-    # Load last_check_time from JSON file
+    # last_check_time is stored in the version.json because program is not always running
     try:
         with open(file_path, "r") as f:
             last_check_time = datetime.datetime.fromisoformat(
@@ -32,27 +31,22 @@ def check_latest_version():
     except Exception as e:
         print(e)
 
-    # Check if it has been more than a week since the last check
+    # League of Legends updates every two weeks but we check once a week for version updates incase of hotfix
     current_time = datetime.datetime.now(datetime.timezone.utc)
     time_since_last_check = current_time - last_check_time
     if time_since_last_check >= datetime.timedelta(weeks=1):
-        # Set the Riot API endpoint for retrieving the latest version
         endpoint = "https://ddragon.leagueoflegends.com/api/versions.json"
 
-        # Send a GET request to the endpoint
         response = requests.get(endpoint)
 
-        # If the request was successful, get the latest_version from the response
         if response.status_code == 200:
             version = response.json()[0]
 
-        # Update last_check_time to be current_time
         check_time = current_time.isoformat()
 
-        # Define dict to store new check_time & version
+        # Storing the minimal data neccesary to keep our program up to date with League of Legends version
         last_checked = {"last_check_time": check_time, "latest_version": version}
 
-        # Write the last_check_time & latest_version to version.json
         with open(file_path, "w") as f:
             json.dump(last_checked, f, indent=4)
 
@@ -76,9 +70,14 @@ def get_summonerID(name):
     Any exceptions that occur while sending the GET request or parsing the JSON response.
     """
 
+    # Encode the summoner name to be URL-safe - neccesary for names with spaces and other special chars
     name = urllib.parse.quote(name)
+
     url = f"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{name}?api_key={os.environ.get('API_KEY')}"
+
     response = requests.get(url)
+
+    # summoner ID is the only data extracted because it is required for active game look-up
     if response.status_code == 200:
         data = response.json()
         return data["id"]
@@ -109,6 +108,7 @@ def get_activegame(summoner_id):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
+        # the participants dict contains extensive data about each player in the active game
         return data["participants"]
     else:
         print(f"{response.status_code} Error: API request unsuccessful")
@@ -131,7 +131,7 @@ def get_champspells(champ_name):
     Raises:
     None.
     """
-
+    # with the version number we can get the latest version of champion abilities
     try:
         with open(os.path.join(os.path.dirname(__file__), "version.json"), "r") as f:
             version = json.load(f)["latest_version"]
@@ -141,6 +141,7 @@ def get_champspells(champ_name):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
+        # all champions have 4 abilities/spells each
         return data["data"][champ_name]["spells"]
     else:
         print(f"{response.status_code} Error: API request unsuccessful")
