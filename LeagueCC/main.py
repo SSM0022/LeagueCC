@@ -27,9 +27,15 @@ def main():
     Returns: None.
     """
 
+    # latest version of the game is neccessary to get latest ability/spell text
     check_latest_version()
+
+    # RIOT does not allow active game look-up by name we must convert it to summoner ID
     sum_id = get_summonerID(input("Name: "))
+
+    # need champion names in active game to retrieve their abilities/spells
     champ_names = find_champnames(get_activegame(sum_id))
+
     for champ in champ_names:
         spells = get_champspells(champ)
         print(find_ccspells(champ, spells))
