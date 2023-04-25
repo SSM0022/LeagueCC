@@ -1,5 +1,5 @@
 # LeagueCC
-Video Demo: N/A
+Video Demo: [Youtube](https://youtu.be/wqEeGAJKwHM)
 
 A command-line program for League of Legends, that outputs all CC abilities of champions in a players active game.
 
